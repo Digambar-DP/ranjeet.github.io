@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>jQuery UI Autocomplete Local DataSource</title>
+    <link
+    <!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- jQuery UI library -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <script type="text/javascript">
+	
+	var dataSrc = [];
+	
+		$.ajax({
+					url: 'http://localhost:8083/rohit/category/autocomplete',
+					method: 'get',
+				async:false,
+                dataType: 'json',
+                success: function (data) {
+                    
+					for(var object in data){
+						dataSrc.push(data[object]);
+					}
+                },
+                error: function (ex) {
+                    alert(ex);
+                }
+		});
+	
+        $(function () {
+			
+			console.log(dataSrc);
+
+            $("#myText").autocomplete({
+            source: dataSrc,
+				select: function( event, ui ) {
+					event.preventDefault();
+					$("#myText").val(ui.item.label);
+					console.log(ui.item.value);
+
+				}        
+			});
+        });
+    </script>
+</head>
+<body>
+    <h2>jQuery UI Autocomplete with Local DataSource</h2>
+    <p>Type a character in the TextBox. Eg: A</p>
+    <input id="myText" />
+</body>
+</html>
